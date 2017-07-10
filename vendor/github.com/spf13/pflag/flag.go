@@ -327,9 +327,7 @@ func (f *FlagSet) ShorthandLookup(name string) *Flag {
 		return nil
 	}
 	if len(name) > 1 {
-		msg := fmt.Sprintf("can not look up shorthand which is more than one ASCII character: %q", name)
-		fmt.Fprintf(f.out(), msg)
-		panic(msg)
+		panic("can't look up for a shorthand with name more than one character")
 	}
 	c := name[0]
 	return f.shorthands[c]

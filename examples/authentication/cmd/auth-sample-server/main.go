@@ -15,7 +15,6 @@ import (
 // Make sure not to overwrite this file after you generated it because all your edits would be lost!
 
 func main() {
-
 	swaggerSpec, err := loads.Analyzed(restapi.SwaggerJSON, "")
 	if err != nil {
 		log.Fatalln(err)
@@ -26,7 +25,7 @@ func main() {
 	defer server.Shutdown()
 
 	parser := flags.NewParser(server, flags.Default)
-	parser.ShortDescription = "keyauth debug"
+	parser.ShortDescription = `keyauth debug`
 	parser.LongDescription = swaggerSpec.Spec().Info.Description
 
 	server.ConfigureFlags()
@@ -52,5 +51,4 @@ func main() {
 	if err := server.Serve(); err != nil {
 		log.Fatalln(err)
 	}
-
 }

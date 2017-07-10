@@ -174,10 +174,6 @@ func (g *Group) eachGroup(f func(*Group)) {
 	}
 }
 
-func isStringFalsy(s string) bool {
-	return s == "" || s == "false" || s == "no" || s == "0"
-}
-
 func (g *Group) scanStruct(realval reflect.Value, sfield *reflect.StructField, handler scanHandler) error {
 	stype := realval.Type()
 
@@ -259,10 +255,10 @@ func (g *Group) scanStruct(realval reflect.Value, sfield *reflect.StructField, h
 		valueName := mtag.Get("value-name")
 		defaultMask := mtag.Get("default-mask")
 
-		optional := !isStringFalsy(mtag.Get("optional"))
-		required := !isStringFalsy(mtag.Get("required"))
+		optional := (mtag.Get("optional") != "")
+		required := (mtag.Get("required") != "")
 		choices := mtag.GetMany("choice")
-		hidden := !isStringFalsy(mtag.Get("hidden"))
+		hidden := (mtag.Get("hidden") != "")
 
 		option := &Option{
 			Description:      description,

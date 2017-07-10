@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	middleware "github.com/go-openapi/runtime/middleware"
-
 	"github.com/go-swagger/go-swagger/examples/authentication/models"
 )
 
@@ -40,19 +39,13 @@ type GetID struct {
 }
 
 func (o *GetID) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	route, rCtx, _ := o.Context.RouteInfo(r)
-	if rCtx != nil {
-		r = rCtx
-	}
+	route, _ := o.Context.RouteInfo(r)
 	var Params = NewGetIDParams()
 
-	uprinc, aCtx, err := o.Context.Authorize(r, route)
+	uprinc, err := o.Context.Authorize(r, route)
 	if err != nil {
 		o.Context.Respond(rw, r, route.Produces, route, err)
 		return
-	}
-	if aCtx != nil {
-		r = aCtx
 	}
 	var principal *models.Principal
 	if uprinc != nil {

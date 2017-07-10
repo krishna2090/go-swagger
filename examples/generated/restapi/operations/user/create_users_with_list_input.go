@@ -38,10 +38,7 @@ type CreateUsersWithListInput struct {
 }
 
 func (o *CreateUsersWithListInput) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	route, rCtx, _ := o.Context.RouteInfo(r)
-	if rCtx != nil {
-		r = rCtx
-	}
+	route, _ := o.Context.RouteInfo(r)
 	var Params = NewCreateUsersWithListInputParams()
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

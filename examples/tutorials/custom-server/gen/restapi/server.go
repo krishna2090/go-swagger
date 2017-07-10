@@ -252,9 +252,9 @@ func (s *Server) Serve() (err error) {
 		}
 
 		if s.TLSCACertificate != "" {
-			caCert, caCertErr := ioutil.ReadFile(string(s.TLSCACertificate))
-			if caCertErr != nil {
-				log.Fatal(caCertErr)
+			caCert, err := ioutil.ReadFile(string(s.TLSCACertificate))
+			if err != nil {
+				log.Fatal(err)
 			}
 			caCertPool := x509.NewCertPool()
 			caCertPool.AppendCertsFromPEM(caCert)

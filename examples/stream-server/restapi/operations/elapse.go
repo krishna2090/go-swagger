@@ -40,10 +40,7 @@ type Elapse struct {
 }
 
 func (o *Elapse) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	route, rCtx, _ := o.Context.RouteInfo(r)
-	if rCtx != nil {
-		r = rCtx
-	}
+	route, _ := o.Context.RouteInfo(r)
 	var Params = NewElapseParams()
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

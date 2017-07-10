@@ -30,9 +30,6 @@ func NewTaskTrackerAPI(spec *loads.Document) *TaskTrackerAPI {
 		ServerShutdown:        func() {},
 		spec:                  spec,
 		ServeError:            errors.ServeError,
-		BasicAuthenticator:    security.BasicAuth,
-		APIKeyAuthenticator:   security.APIKeyAuth,
-		BearerAuthenticator:   security.BearerAuth,
 		JSONConsumer:          runtime.JSONConsumer(),
 		MultipartformConsumer: runtime.DiscardConsumer,
 		JSONProducer:          runtime.JSONProducer(),
@@ -87,17 +84,6 @@ type TaskTrackerAPI struct {
 	defaultConsumes string
 	defaultProduces string
 	Middleware      func(middleware.Builder) http.Handler
-
-	// BasicAuthenticator generates a runtime.Authenticator from the supplied basic auth function.
-	// It has a default implemention in the security package, however you can replace it for your particular usage.
-	BasicAuthenticator func(security.UserPassAuthentication) runtime.Authenticator
-	// APIKeyAuthenticator generates a runtime.Authenticator from the supplied token auth function.
-	// It has a default implemention in the security package, however you can replace it for your particular usage.
-	APIKeyAuthenticator func(string, string, security.TokenAuthentication) runtime.Authenticator
-	// BearerAuthenticator generates a runtime.Authenticator from the supplied bearer token auth function.
-	// It has a default implemention in the security package, however you can replace it for your particular usage.
-	BearerAuthenticator func(string, security.ScopedTokenAuthentication) runtime.Authenticator
-
 	// JSONConsumer registers a consumer for a "application/vnd.goswagger.examples.task-tracker.v1+json" mime type
 	JSONConsumer runtime.Consumer
 	// MultipartformConsumer registers a consumer for a "multipart/form-data" mime type
@@ -258,11 +244,11 @@ func (o *TaskTrackerAPI) AuthenticatorsFor(schemes map[string]spec.SecuritySchem
 
 		case "token_header":
 
-			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, o.TokenHeaderAuth)
+			result[name] = security.APIKeyAuth(scheme.Name, scheme.In, o.TokenHeaderAuth)
 
 		case "api_key":
 
-			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, o.APIKeyAuth)
+			result[name] = security.APIKeyAuth(scheme.Name, scheme.In, o.APIKeyAuth)
 
 		}
 	}

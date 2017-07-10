@@ -15,7 +15,6 @@ import (
 // Make sure not to overwrite this file after you generated it because all your edits would be lost!
 
 func main() {
-
 	swaggerSpec, err := loads.Analyzed(restapi.SwaggerJSON, "")
 	if err != nil {
 		log.Fatalln(err)
@@ -26,8 +25,8 @@ func main() {
 	defer server.Shutdown()
 
 	parser := flags.NewParser(server, flags.Default)
-	parser.ShortDescription = "Countdown"
-	parser.LongDescription = "Example server for emitting newline delimited JSON"
+	parser.ShortDescription = `Countdown`
+	parser.LongDescription = `Example server for emitting newline delimited JSON`
 
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {
@@ -52,5 +51,4 @@ func main() {
 	if err := server.Serve(); err != nil {
 		log.Fatalln(err)
 	}
-
 }

@@ -26,7 +26,7 @@ const (
 // This implementation currently supports most of sftp server protocol version 3,
 // as specified at http://tools.ietf.org/html/draft-ietf-secsh-filexfer-02
 type Server struct {
-	*serverConn
+	serverConn
 	debugStream   io.Writer
 	readOnly      bool
 	pktMgr        packetManager
@@ -75,7 +75,7 @@ type serverRespondablePacket interface {
 //
 // A subsequent call to Serve() is required to begin serving files over SFTP.
 func NewServer(rwc io.ReadWriteCloser, options ...ServerOption) (*Server, error) {
-	svrConn := &serverConn{
+	svrConn := serverConn{
 		conn: conn{
 			Reader:      rwc,
 			WriteCloser: rwc,
@@ -84,7 +84,7 @@ func NewServer(rwc io.ReadWriteCloser, options ...ServerOption) (*Server, error)
 	s := &Server{
 		serverConn:  svrConn,
 		debugStream: ioutil.Discard,
-		pktMgr:      newPktMgr(svrConn),
+		pktMgr:      newPktMgr(&svrConn),
 		openFiles:   make(map[string]*os.File),
 		maxTxPacket: 1 << 15,
 	}
@@ -282,16 +282,15 @@ func handlePacket(s *Server, p interface{}) error {
 // is stopped.
 func (svr *Server) Serve() error {
 	var wg sync.WaitGroup
-	runWorker := func(ch requestChan) {
+	wg.Add(1)
+	workerFunc := func(ch requestChan) {
 		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			if err := svr.sftpServerWorker(ch); err != nil {
-				svr.conn.Close() // shuts down recvPacket
-			}
-		}()
+		defer wg.Done()
+		if err := svr.sftpServerWorker(ch); err != nil {
+			svr.conn.Close() // shuts down recvPacket
+		}
 	}
-	pktChan := svr.pktMgr.workerChan(runWorker)
+	pktChan := svr.pktMgr.workerChan(workerFunc)
 
 	var err error
 	var pkt requestPacket
@@ -312,6 +311,7 @@ func (svr *Server) Serve() error {
 
 		pktChan <- pkt
 	}
+	wg.Done()
 
 	close(pktChan) // shuts down sftpServerWorkers
 	wg.Wait()      // wait for all workers to exit
