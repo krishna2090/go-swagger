@@ -57,7 +57,7 @@ layout:
     - name: configure
       source: asset:serverConfigureapi
       target: "{{ joinFilePath .Target .ServerPackage }}"
-      file_name: "configure_{{ .Name }}.go"
+      file_name: "{{ .Name }}_client.go"
       skip_exists: true
     - name: main
       source: asset:serverMain
