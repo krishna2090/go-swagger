@@ -9,10 +9,10 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	graceful "github.com/tylerb/graceful"
 
-	"github.com/go-swagger/go-swagger/examples/generated/restapi/operations"
-	"github.com/go-swagger/go-swagger/examples/generated/restapi/operations/pet"
-	"github.com/go-swagger/go-swagger/examples/generated/restapi/operations/store"
-	"github.com/go-swagger/go-swagger/examples/generated/restapi/operations/user"
+	"github.com/krishna2090/go-swagger/examples/generated/restapi/operations"
+	"github.com/krishna2090/go-swagger/examples/generated/restapi/operations/pet"
+	"github.com/krishna2090/go-swagger/examples/generated/restapi/operations/store"
+	"github.com/krishna2090/go-swagger/examples/generated/restapi/operations/user"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten

@@ -116,7 +116,7 @@ if err := val.Validate(formats); err != nil {
 {{ template "propertyvalidator" . }}
 {{ end }}{{end}}{{if and .IsTuple .AdditionalItems }}
 // TODO: validating additional items should go here, if you see this raise an issue
-// at https://github.com/go-swagger/go-swagger/issues
+// at https://github.com/krishna2090/go-swagger/issues
 {{end}}{{ else }}{{ template "primitivefieldvalidator" .}}{{ end }}
 {{else if .IsCustomFormatter }}{{ template "validationCustomformat" .}}
 {{else if .IsArray }}{{ template "slicevalidator" .}}
@@ -138,7 +138,7 @@ if err := val.Validate(formats); err != nil {
 {{ template "propertyvalidator" . }}
 {{ end }}{{end}}{{if and .IsTuple .AdditionalItems }}
 // TODO: validating additional items should go here, if you see this raise an issue
-// at https://github.com/go-swagger/go-swagger/issues
+// at https://github.com/krishna2090/go-swagger/issues
 {{end}}{{end}}
 
   {{ end }}
@@ -174,7 +174,7 @@ if err := {{.ValueExpression}}.Validate(formats); err != nil {
 {{ template "propertyvalidator" . }}
 {{ end }}{{end}}{{if and .IsTuple .AdditionalItems }}
 // TODO: validating additional items should go here, if you see this raise an issue
-// at https://github.com/go-swagger/go-swagger/issues
+// at https://github.com/krishna2090/go-swagger/issues
 {{end}}{{end}}
 {{define "propertyvalidator"}}
 {{ if .IsPrimitive }}{{ if .IsAliased }}{{ template "objectvalidator" . }}{{ else }}{{ template "primitivefieldvalidator" .}}{{ end }}

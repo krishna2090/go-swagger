@@ -36,7 +36,7 @@ Help Options:
           --skip-validation   skips validation of spec prior to generation
 ```
 
-There is an example client in https://github.com/go-swagger/go-swagger/tree/master/examples/todo-list/client
+There is an example client in https://github.com/krishna2090/go-swagger/tree/master/examples/todo-list/client
 
 To generate a client:
 

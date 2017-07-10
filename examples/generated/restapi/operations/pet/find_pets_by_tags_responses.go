@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"github.com/go-swagger/go-swagger/examples/generated/models"
+	"github.com/krishna2090/go-swagger/examples/generated/models"
 )
 
 // FindPetsByTagsOKCode is the HTTP code returned for type FindPetsByTagsOK

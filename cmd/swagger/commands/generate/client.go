@@ -19,7 +19,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/go-swagger/go-swagger/generator"
+	"github.com/krishna2090/go-swagger/generator"
 )
 
 // Client the command to generate a swagger client
