@@ -587,10 +587,6 @@ func (a *appGenerator) makeCodegenApp() (GenApp, error) {
 			st = a.GenOpts.Tags
 		}
 		intersected := intersectTags(o.Tags, st)
-		if len(st) > 0 && len(intersected) == 0 {
-			continue
-		}
-
 		if len(intersected) == 1 {
 			tag := intersected[0]
 			bldr.APIPackage = a.GenOpts.LanguageOpts.MangleName(swag.ToFileName(tag), a.APIPackage)
@@ -614,16 +610,21 @@ func (a *appGenerator) makeCodegenApp() (GenApp, error) {
 	sort.Sort(genOps)
 
 	log.Println("grouping operations into packages")
-	opsGroupedByPackage := make(map[string]GenOperations)
+	opsGroupedByTag := make(map[string]GenOperations)
 	for _, operation := range genOps {
 		if operation.Package == "" {
 			operation.Package = a.Package
 		}
-		opsGroupedByPackage[operation.Package] = append(opsGroupedByPackage[operation.Package], operation)
+		opsGroupedByTag[operation.Package] = append(opsGroupedByTag[operation.Package], operation)
+	}
+
+	modelsPackage := a.GenOpts.ExistingModels
+	if modelsPackage == "" {
+		modelsPackage = filepath.ToSlash(filepath.Join(baseImport(a.Target), a.ModelsPackage))
 	}
 
 	var opGroups GenOperationGroups
-	for k, v := range opsGroupedByPackage {
+	for k, v := range opsGroupedByTag {
 		sort.Sort(v)
 		opGroup := GenOperationGroup{
 			Name:           k,
